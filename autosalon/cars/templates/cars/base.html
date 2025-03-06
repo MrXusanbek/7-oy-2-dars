@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Autosalon{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Bosh sahifa</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">Chiqish</a>
+        {% else %}
+            <a href="{% url 'login' %}">Kirish</a>
+            <a href="{% url 'register' %}">Ro‘yxatdan o‘tish</a>
+        {% endif %}
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

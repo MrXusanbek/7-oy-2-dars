@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Car Showroom</title>
+
+    {% load static %}
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+{% load custom_tags %}
+
+<h1 class="text-center">Welcome to Car Showroom</h1>
+
+<h2>All Brands</h2>
+<ul>
+    {% get_brands as brands %}
+    {% for brand in brands %}
+        <li>{{ brand.name }}</li>
+    {% endfor %}
+</ul>
+
+<h2>All Colors</h2>
+<ul>
+    {% get_colors as colors %}
+    {% for color in colors %}
+        <li>{{ color.name }}</li>
+    {% endfor %}
+</ul>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

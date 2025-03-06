@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ car.name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            color: #007BFF;
+            text-align: center;
+        }
+        .car-info {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .car-info img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .comments-section {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .comments-section h2 {
+            margin-top: 0;
+            color: #444;
+        }
+        .comment {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+        .comment:last-child {
+            border-bottom: none;
+        }
+        .comment strong {
+            color: #007BFF;
+        }
+        form {
+            margin-top: 20px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 100px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .login-prompt {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .login-prompt a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .login-prompt a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="car-info">
+        <h1>{{ car.brand.name }} {{ car.name }}</h1>
+        <p>Rang: {{ car.color.name }}</p>
+        <p>Narx: ${{ car.price }}</p>
+        <p>{{ car.description }}</p>
+        {% if car.image %}
+            <img src="{{ car.image.url }}" alt="{{ car.brand.name }} {{ car.name }} rasmi" width="300">
+        {% endif %}
+    </div>
+
+    <div class="comments-section">
+        <h2>Sharhlar:</h2>
+        {% for comment in comments %}
+            <div class="comment">
+                <p><strong>{{ comment.user.username }}:</strong> {{ comment.text }}</p>
+            </div>
+        {% endfor %}
+
+        {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'add_comment' car.id %}">
+                {% csrf_token %}
+                <label for="comment-text">Sharhingizni yozing:</label>
+                <textarea id="comment-text" name="text" placeholder="Sharhingizni yozing..." required></textarea>
+                <button type="submit">Yuborish</button>
+            </form>
+        {% else %}
+            <p class="login-prompt">Sharh qoldirish uchun <a href="{% url 'login' %}">kirish</a> qiling.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

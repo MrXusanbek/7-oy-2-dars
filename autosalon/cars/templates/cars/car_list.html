@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avtomobillar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+        }
+        .car-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .car-item {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .car-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .car-item h2 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #007BFF;
+        }
+        .car-item h2 a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .car-item h2 a:hover {
+            text-decoration: underline;
+        }
+        .car-item p {
+            margin: 5px 0;
+            font-size: 1em;
+            color: #555;
+        }
+        .car-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ filter_type }} bo‘yicha mashinalar</h1>
+    <div class="car-list">
+        {% for car in cars %}
+            <div class="car-item">
+                <h2><a href="{% url 'car_detail' car.id %}" title="{{ car.brand.name }} {{ car.name }} haqida batafsil">{{ car.brand.name }} {{ car.name }}</a></h2>
+                <p>Rang: {{ car.color.name }}</p>
+                <p>Narx: ${{ car.price }}</p>
+                {% if car.image %}
+                    <img src="{{ car.image.url }}" alt="{{ car.brand.name }} {{ car.name }} rasmi" width="200">
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
