@@ -1,6 +1,9 @@
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from pyexpat.errors import messages
+from django.views import View
+
+
 
 from .models import Car, Color, Brand, Comment
 from django.contrib.auth.decorators import login_required
@@ -88,4 +91,142 @@ def add_car(request):
 
 def home(request):
     return render(request, 'cars/home.html')
+
+
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views import View
+from .models import Lesson
+from django.urls import reverse_lazy
+
+
+class LessonListView(ListView):
+    model = Lesson
+    template_name = 'lessons/lesson_list.html'
+    context_object_name = 'lessons'
+
+
+class LessonDetailView(DetailView):
+    model = Lesson
+    template_name = 'lessons/lesson_detail.html'
+    context_object_name = 'lesson'
+
+
+class LessonCreateView(CreateView):
+    model = Lesson
+    template_name = 'lessons/lesson_form.html'
+    fields = ['title', 'description']
+    success_url = reverse_lazy('lesson_list')
+
+
+class LessonUpdateView(UpdateView):
+    model = Lesson
+    template_name = 'lessons/lesson_form.html'
+    fields = ['title', 'description']
+    success_url = reverse_lazy('lesson_list')
+
+
+class LessonDeleteView(DeleteView):
+    model = Lesson
+    template_name = 'lessons/lesson_confirm_delete.html'
+    context_object_name = 'lesson'
+    success_url = reverse_lazy('lesson_list')
+
+
+from django.shortcuts import render, redirect
+from django.views.generic.edit import CreateView
+from .forms import LessonForm
+
+class LessonCreateView(CreateView):
+    model = Lesson
+    form_class = LessonForm
+    template_name = 'cars/lesson_form.html'
+    success_url = '/lesson/create/'
+
+from django.shortcuts import render
+from django.views.generic.edit import UpdateView
+from .models import Car
+
+class CarUpdateView(UpdateView):
+    model = Car
+    fields = ['name', 'brand', 'category', 'price']  # kerakli maydonlarni qo'shing
+    template_name = 'cars/car_form.html'  # form uchun shablon
+    success_url = '/cars/'  # muvaffaqiyatli yangilashdan keyin qayerga yo'naltirish
+
+
+from django.shortcuts import render
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from .models import Category
+from django.urls import reverse_lazy
+
+# Category List
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'cars/category_list.html'
+    context_object_name = 'categories'
+
+# Category Create
+class CategoryCreateView(CreateView):
+    model = Category
+    fields = ['name', 'description']
+    template_name = 'cars/category_form.html'
+    success_url = reverse_lazy('category_list')
+
+# Category Update
+class CategoryUpdateView(UpdateView):
+    model = Category
+    fields = ['name', 'description']
+    template_name = 'cars/category_form.html'
+    success_url = reverse_lazy('category_list')
+
+# Category Delete
+class CategoryDeleteView(DeleteView):
+    model = Category
+    template_name = 'cars/category_confirm_delete.html'
+    success_url = reverse_lazy('category_list')
+
+from django.db.models import Q
+from django.views.generic import ListView
+from .models import Car, Brand
+
+# Car search
+class CarSearchView(ListView):
+    model = Car
+    template_name = 'cars/car_list.html'
+    context_object_name = 'cars'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Car.objects.filter(Q(name__icontains=query) | Q(brand__name__icontains=query))
+        return Car.objects.all()
+
+# Brand search
+class BrandSearchView(ListView):
+    model = Brand
+    template_name = 'cars/brand_list.html'
+    context_object_name = 'brands'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Brand.objects.filter(name__icontains=query)
+        return Brand.objects.all()
+
+class CarListView(ListView):
+    model = Car
+    template_name = 'cars/car_list.html'
+    context_object_name = 'cars'
+    paginate_by = 10  # 10 ta mashina bir sahifada
+
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'cars/category_list.html'
+    context_object_name = 'categories'
+    paginate_by = 5  # 5 ta kategoriya bir sahifada
+
+
+from django.http import HttpResponse
+#
+# def home(request):
+#     return HttpResponse("Welcome to the home page!")
 

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- lesson_confirm_delete.html -->
+<h1>Are you sure you want to delete this lesson?</h1>
+<p>{{ lesson.title }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete</button>
+</form>
+<a href="{% url 'lesson_list' %}">Cancel</a>
+
+</body>
+</html>

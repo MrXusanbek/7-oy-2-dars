@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- lesson_detail.html -->
+<h1>{{ lesson.title }}</h1>
+<p>{{ lesson.description }}</p>
+<a href="{% url 'lesson_update' lesson.pk %}">Edit</a>
+<a href="{% url 'lesson_delete' lesson.pk %}">Delete</a>
+
+</body>
+</html>
